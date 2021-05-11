@@ -1,3 +1,6 @@
+<head>
+  {% seo %}
+ </head>
 # Prometheus Kurulumu
 
 ## Kullanıcıları Oluşturulur.
