@@ -1,6 +1,13 @@
 theme: jekyll-theme-hacker
 title: MongoDB Replica Set Monitoring with Grafana and Prometheus
 description: MongoDB Prometheus Exporter Dashboard.
+social:
+  name: Ergün Elvan Bilsel
+  links:
+    - https://www.linkedin.com/in/erelbi
+    - https://github.com/erelbi
+    - https://medium.com/erelbi/
 plugins:
   - jekyll-seo-tag
-google_analytics: G-HKZGCJKVK1
+  google_analytics: G-HKZGCJKVK1
+  
