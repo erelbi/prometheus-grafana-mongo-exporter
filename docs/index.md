@@ -118,6 +118,127 @@ sudo systemctl start prometheus &&
 sudo systemctl status prometheus &&
 ```
 
+# Exporter Kurulumu
+
+## MONGO_URI Değişkeni Atanır.
+```sh
+export MONGO_URI=mongodb://mongodb_exporter:password@mongo1-node:27017,mongo2-node:27017,mongo3-node:27017/?authSource=admin
+```
+:warning: hosts un altına tanımlamaları unutmayınız!
+***Örnek***
+```sh
+#cat /etc/hosts
+192.168.1.2 mongo1-node
+193.168.1.3 mongo2-node
+194.168.1.4 mongo3-node
+```
+## MongoDB de Kullanıcının Oluşturulması
+
+```json
+## mongodb'ye bağlanılır.
+##> Burası güncellenecektir.
+use admin
+
+db.createRole({
+    role: "explainRole",
+    privileges: [{
+        resource: {
+            db: "",
+            collection: ""
+            },
+        actions: [
+            "listIndexes",
+            "listCollections",
+            "dbStats",
+            "dbHash",
+            "collStats",
+            "find"
+            ]
+        }],
+    roles:[]
+})
+
+db.getSiblingDB("admin").createUser({
+   user: "mongodb_exporter",
+   pwd: "password",
+   roles: [
+      { role: "explainRole", db: "admin" },
+      { role: "clusterMonitor", db: "admin" },
+      { role: "read", db: "local" }
+   ]
+})
+```
+
+## Exporter Dosyasının Kurulumu
+```sh
+sudo git clone https://github.com/erelbi/prometheus-grafana-mongo-exporter.git
+cd prometheus-grafana-mongo-exporter/
+sudo pip3 install -r requirements.txt
+sudo mkdir -p  /opt/prometheus/mongodb-exporter
+sudo cp -p -r  exporter/exporter.py /opt/prometheus/mongodb-exporter/
+```
+## İzinler 
+
+```sh
+sudo chown prometheus:prometheus -R /opt/prometheus
+sudo chmod +x /opt/prometheus/mongodb-exporter/exporter.py
+```
+
+## Exporter Servis Haline Getirilmesi
+```sh
+vi /etc/systemd/system/mongo-exporter.service
+```
+
+```service
+[Unit]
+Description=MongoDB Replica set prometheus exporter
+After=network.target
+
+[Service]
+User=prometheus
+Group=prometheus
+WorkingDirectory=/opt/prometheus/mongodb-exporter/
+ExecStart=/opt/prometheus/mongodb-exporter/exporter.py
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+```
+```sh
+sudo systemctl daemon-reload &&
+sudo systemctl enable mongo-exporter &&
+sudo systemctl start mongo-exporter &&
+sudo systemctl status mongo-exporter &&
+```
+# Grafana Kurulumu
+
+```sh
+sudo vi /etc/yum.repos.d/grafana.repo 
+```
+## Repo ( RedHat )
+```repo
+[grafana]
+name=grafana
+baseurl=https://packages.grafana.com/oss/rpm
+repo_gpgcheck=1
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.grafana.com/gpg.key
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+```
+```sh
+sudo yum update 
+sudo yum install grafana 
+```
+```sh
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+```
+
+
+
 
 
 
