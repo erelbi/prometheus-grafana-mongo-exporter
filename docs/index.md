@@ -1,6 +1,4 @@
 <head>
-
-  <meta name="google-site-verification" content="VyUGuNXMkHdI3DPglQgRg2-rD23heYAvi-WjpT1QZP8" />
     {% seo %}
  </head>
  
