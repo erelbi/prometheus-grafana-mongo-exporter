@@ -7,9 +7,9 @@ social:
     - https://www.linkedin.com/in/erelbi
     - https://github.com/erelbi
     - https://medium.com/erelbi/
-plugins:
-  - jekyll-seo-tag
- 	 google_analytics: G-HKZGCJKVK1
+plugins:https://www.google.com/
+  - jekyll-seo-tag:
+ 	    google_analytics: G-HKZGCJKVK1
   - jekyll_analytics:
       GoogleAnalytics:     
         id: G-HKZGCJKVK1   
