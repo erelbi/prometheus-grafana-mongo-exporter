@@ -80,5 +80,48 @@ scrape_configs:
 ```
 
 
+## Yapılandırma Dosyasının İzinleri
+
+```sh
+sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
+```
+
+## Servis Haline Getirilmesi
+```sh
+vi /etc/systemd/system/prometheus.service
+```
+
+```service
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+    --config.file /etc/prometheus/prometheus.yml \
+    --storage.tsdb.path /var/lib/prometheus/ \
+    --web.console.templates=/etc/prometheus/consoles \
+    --web.console.libraries=/etc/prometheus/console_libraries \
+    --web.listen-address=:9010  
+
+[Install]
+WantedBy=multi-user.target
+```
+```sh
+sudo systemctl daemon-reload &&
+sudo systemctl enable prometheus &&
+sudo systemctl start prometheus &&
+sudo systemctl status prometheus &&
+```
+
+
+
+
+
+
 
 
