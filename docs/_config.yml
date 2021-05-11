@@ -9,7 +9,7 @@ social:
     - https://medium.com/erelbi/
 plugins:https://www.google.com/
   - jekyll-seo-tag:
- 	    google_analytics: G-HKZGCJKVK1
+      google_analytics: G-HKZGCJKVK1
   - jekyll_analytics:
       GoogleAnalytics:     
         id: G-HKZGCJKVK1   
